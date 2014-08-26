@@ -36,6 +36,40 @@
 
 namespace HPHP {
 
+class StringExtension : public Extension {
+public:
+  StringExtension() : Extension("string") {}
+  void moduleInit() {
+    HHVM_FE(addcslashes);
+    HHVM_FE(stripcslashes);
+    HHVM_FE(addslashes);
+    HHVM_FE(stripslashes);
+    HHVM_FE(bin2hex);
+    HHVM_FE(hex2bin);
+    HHVM_FE(quotemeta);
+    HHVM_FE(str_shuffle);
+    HHVM_FE(strrev);
+    HHVM_FE(strtoupper);
+    HHVM_FE(strtolower);
+    HHVM_FE(ucfirst);
+    HHVM_FE(lcfirst);
+    HHVM_FE(ucwords);
+    HHVM_FE(strip_tags);
+    HHVM_FE(trim);
+    HHVM_FE(ltrim);
+    HHVM_FE(rtrim);
+    HHVM_FE(chop);
+    HHVM_FE(explode);
+    HHVM_FE(implode);
+    HHVM_FE(str_replace);
+    HHVM_FE(str_ireplace);
+    HHVM_FE(substr_replace);
+    HHVM_FE(substr);
+    HHVM_FE(str_pad);
+    loadSystemlib();
+  }
+} s_string_extension;
+
 static Mutex s_mutex;
 ///////////////////////////////////////////////////////////////////////////////
 

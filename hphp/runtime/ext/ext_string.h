@@ -33,48 +33,50 @@ extern const HPHP::StaticString k_HPHP_TRIM_CHARLIST;
 extern const int64_t k_STR_PAD_RIGHT;
 extern const int64_t k_ENT_COMPAT;
 
-String f_addcslashes(const String& str, const String& charlist);
-String f_stripcslashes(const String& str);
-String f_addslashes(const String& str);
-String f_stripslashes(const String& str);
-String f_bin2hex(const String& str);
-Variant f_hex2bin(const String& str);
-String f_nl2br(const String& str, bool is_xhtml = true);
-String f_quotemeta(const String& str);
-String f_str_shuffle(const String& str);
-String f_strrev(const String& str);
-String f_strtolower(String str);
-String f_strtoupper(String str);
-String f_ucfirst(String str);
-String f_lcfirst(String str);
-String f_ucwords(String str);
-String f_strip_tags(const String& str, const String& allowable_tags = "");
-String f_trim(String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
-String f_ltrim(String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
-String f_rtrim(String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
-String f_chop(String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
-Variant f_explode(const String& delimiter, const String& str, int limit = 0x7FFFFFFF);
+String HHVM_FUNCTION(addcslashes, const String& str, const String& charlist);
+String HHVM_FUNCTION(stripcslashes, const String& str);
+String HHVM_FUNCTION(addslashes, const String& str);
+String HHVM_FUNCTION(stripslashes, const String& str);
+String HHVM_FUNCTION(bin2hex, const String& str);
+Variant HHVM_FUNCTION(hex2bin, const String& str);
+String HHVM_FUNCTION(quotemeta, const String& str);
+String HHVM_FUNCTION(str_shuffle, const String& str);
+String HHVM_FUNCTION(strrev, const String& str);
+String HHVM_FUNCTION(strtolower, String str);
+String HHVM_FUNCTION(strtoupper, String str);
+String HHVM_FUNCTION(ucfirst, String str);
+String HHVM_FUNCTION(lcfirst, String str);
+String HHVM_FUNCTION(ucwords, String str);
+String HHVM_FUNCTION(strip_tags, const String& str, const String& allowable_tags = "");
+String HHVM_FUNCTION(trim, String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
+String HHVM_FUNCTION(ltrim, String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
+String HHVM_FUNCTION(rtrim, String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
+String HHVM_FUNCTION(chop, String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
+Variant HHVM_FUNCTION(explode, const String& delimiter, const String& str, int limit = 0x7FFFFFFF);
 
-String f_implode(const Variant& arg1, const Variant& arg2 = null_variant);
+String HHVM_FUNCTION(implode, const Variant& arg1, const Variant& arg2 = null_variant);
 
-String f_join(const Variant& glue, const Variant& pieces = null_variant);
-Variant f_str_split(const String& str, int split_length = 1);
-Variant f_chunk_split(const String& body, int chunklen = 76,
+Variant HHVM_FUNCTION(str_split, const String& str, int split_length = 1);
+Variant HHVM_FUNCTION(chunk_split, const String& body, int chunklen = 76,
                       const String& end = "\r\n");
 
-Variant f_strtok(const String& str, const Variant& token = null_variant);
+Variant HHVM_FUNCTION(strtok, const String& str, const Variant& token = null_variant);
 
-Variant f_str_replace(const Variant& search, const Variant& replace, const Variant& subject,
+Variant HHVM_FUNCTION(str_replace, const Variant& search, 
+                      const Variant& replace, const Variant& subject,
                       VRefParam count = uninit_null());
-Variant f_str_ireplace(const Variant& search, const Variant& replace, const Variant& subject,
-                       VRefParam count = uninit_null());
-Variant f_substr_replace(const Variant& str, const Variant& replacement, const Variant& start,
-                         const Variant& length = 0x7FFFFFFF);
+Variant HHVM_FUNCTION(str_ireplace, const Variant& search, 
+                      const Variant& replace, const Variant& subject,
+                      VRefParam count = uninit_null());
+Variant HHVM_FUNCTION(substr_replace, const Variant& str, 
+                      const Variant& replacement, const Variant& start,
+                      const Variant& length = 0x7FFFFFFF);
 
-Variant f_substr(const String& str, int start, int length = 0x7FFFFFFF);
-String f_str_pad(const String& input, int pad_length, const String& pad_string = " ",
-                 int pad_type = k_STR_PAD_RIGHT);
-String f_str_repeat(const String& input, int multiplier);
+Variant HHVM_FUNCTION(substr, const String& str, int start, int length = 0x7FFFFFFF);
+String HHVM_FUNCTION(str_pad, const String& input, int pad_length, 
+                     const String& pad_string = " ",
+                     int pad_type = k_STR_PAD_RIGHT);
+String HHVM_FUNCTION(str_repeat, const String& input, int multiplier));
 
 ///////////////////////////////////////////////////////////////////////////////
 // encoding/decoding
