@@ -42,22 +42,22 @@ Variant HHVM_FUNCTION(hex2bin, const String& str);
 String HHVM_FUNCTION(quotemeta, const String& str);
 String HHVM_FUNCTION(str_shuffle, const String& str);
 String HHVM_FUNCTION(strrev, const String& str);
-String HHVM_FUNCTION(strtolower, String str);
-String HHVM_FUNCTION(strtoupper, String str);
-String HHVM_FUNCTION(ucfirst, String str);
-String HHVM_FUNCTION(lcfirst, String str);
-String HHVM_FUNCTION(ucwords, String str);
+String HHVM_FUNCTION(strtolower, const String& str);
+String HHVM_FUNCTION(strtoupper, const String& str);
+String HHVM_FUNCTION(ucfirst, const String& str);
+String HHVM_FUNCTION(lcfirst, const String& str);
+String HHVM_FUNCTION(ucwords, const String& str);
 String HHVM_FUNCTION(strip_tags, const String& str, const String& allowable_tags = "");
-String HHVM_FUNCTION(trim, String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
-String HHVM_FUNCTION(ltrim, String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
-String HHVM_FUNCTION(rtrim, String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
-String HHVM_FUNCTION(chop, String str, const String& charlist = k_HPHP_TRIM_CHARLIST);
-Variant HHVM_FUNCTION(explode, const String& delimiter, const String& str, int limit = 0x7FFFFFFF);
+String HHVM_FUNCTION(trim, const String& str, const String& charlist = k_HPHP_TRIM_CHARLIST);
+String HHVM_FUNCTION(ltrim, const String& str, const String& charlist = k_HPHP_TRIM_CHARLIST);
+String HHVM_FUNCTION(rtrim, const String& str, const String& charlist = k_HPHP_TRIM_CHARLIST);
+String HHVM_FUNCTION(chop, const String& str, const String& charlist = k_HPHP_TRIM_CHARLIST);
+Variant HHVM_FUNCTION(explode, const String& delimiter, const String& str, int64_t limit = 0x7FFFFFFF);
 
 String HHVM_FUNCTION(implode, const Variant& arg1, const Variant& arg2 = null_variant);
 
-Variant HHVM_FUNCTION(str_split, const String& str, int split_length = 1);
-Variant HHVM_FUNCTION(chunk_split, const String& body, int chunklen = 76,
+Variant HHVM_FUNCTION(str_split, const String& str, int64_t split_length = 1);
+Variant HHVM_FUNCTION(chunk_split, const String& body, int64_t chunklen = 76,
                       const String& end = "\r\n");
 
 Variant HHVM_FUNCTION(strtok, const String& str, const Variant& token = null_variant);
@@ -72,11 +72,11 @@ Variant HHVM_FUNCTION(substr_replace, const Variant& str,
                       const Variant& replacement, const Variant& start,
                       const Variant& length = 0x7FFFFFFF);
 
-Variant HHVM_FUNCTION(substr, const String& str, int start, int length = 0x7FFFFFFF);
-String HHVM_FUNCTION(str_pad, const String& input, int pad_length, 
+Variant HHVM_FUNCTION(substr, const String& str, int64_t start, int64_t length = 0x7FFFFFFF);
+String HHVM_FUNCTION(str_pad, const String& input, int64_t pad_length, 
                      const String& pad_string = " ",
-                     int pad_type = k_STR_PAD_RIGHT);
-String HHVM_FUNCTION(str_repeat, const String& input, int multiplier));
+                     int64_t pad_type = k_STR_PAD_RIGHT);
+String HHVM_FUNCTION(str_repeat, const String& input, int64_t multiplier);
 
 ///////////////////////////////////////////////////////////////////////////////
 // encoding/decoding
@@ -149,11 +149,8 @@ int64_t f_strcoll(const String& str1, const String& str2);
 
 Variant f_substr_compare(const String& main_str, const String& str, int offset,
                          int length = INT_MAX, bool case_insensitivity = false);
-
 Variant f_strrchr(const String& haystack, const Variant& needle);
 Variant f_strstr(const String& haystack, const Variant& needle, bool before_needle = false);
-Variant f_stristr(const String& haystack, const Variant& needle,
-                  bool before_needle = false);
 Variant f_strpbrk(const String& haystack, const String& char_list);
 bool str_contains_any_of(const String& haystack, const String& char_list);
 

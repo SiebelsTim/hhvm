@@ -61,9 +61,13 @@ public:
     HHVM_FE(chop);
     HHVM_FE(explode);
     HHVM_FE(implode);
+    HHVM_FE(str_split);
+    HHVM_FE(chunk_split);
+    HHVM_FE(strtok);
     HHVM_FE(str_replace);
     HHVM_FE(str_ireplace);
     HHVM_FE(substr_replace);
+    HHVM_FE(str_repeat);
     HHVM_FE(substr);
     HHVM_FE(str_pad);
     loadSystemlib();
@@ -381,11 +385,11 @@ String HHVM_FUNCTION(strrev, const String& str) {
   return ret;
 }
 
-String HHVM_FUNCTION(strtolower, String str) {
+String HHVM_FUNCTION(strtolower, const String& str) {
   return stringForEachFast(str, tolower);
 }
 
-String HHVM_FUNCTION(strtoupper, String str) {
+String HHVM_FUNCTION(strtoupper, const String& str) {
   return stringForEachFast(str, toupper);
 }
 
@@ -408,15 +412,15 @@ String stringToCaseFirst(const String& str, OpTo tocase, OpIs iscase) {
   return ret;
 }
 
-String HHVM_FUNCTION(ucfirst, String str) {
+String HHVM_FUNCTION(ucfirst, const String& str) {
   return stringToCaseFirst(str, toupper, isupper);
 }
 
-String HHVM_FUNCTION(lcfirst, String str) {
+String HHVM_FUNCTION(lcfirst, const String& str) {
   return stringToCaseFirst(str, tolower, islower);
 }
 
-String HHVM_FUNCTION(ucwords, String str) {
+String HHVM_FUNCTION(ucwords, const String& str) {
   char last = ' ';
   return stringForEachFast(str, [&] (char c) {
     char ret = isspace(last) ? toupper(c) : c;
@@ -431,7 +435,8 @@ String HHVM_FUNCTION(strip_tags, const String& str,
 }
 
 template <bool left, bool right> ALWAYS_INLINE
-String stringTrim(String& str, const String& charlist) {
+String stringTrim(const String& string, const String& charlist) {
+  String str = string;
   char flags[256];
   string_charmask(charlist.c_str(), charlist.size(), flags);
 
@@ -444,7 +449,8 @@ String stringTrim(String& str, const String& charlist) {
   }
 
   if (right) {
-    for (; end >= start && flags[(unsigned char)str[end]]; --end) {}
+    for (; end >= start && flags[(unsigned char)str[end]]; --end) 
+      /* do nothing */;
   }
 
   if (str.get()->hasExactlyOneRef()) {
@@ -460,28 +466,28 @@ String stringTrim(String& str, const String& charlist) {
   return str.substr(start, end - start + 1);
 }
 
-String HHVM_FUNCTION(trim, String str, 
+String HHVM_FUNCTION(trim, const String& str, 
                      const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
   return stringTrim<true,true>(str, charlist);
 }
 
-String HHVM_FUNCTION(ltrim, String str, 
+String HHVM_FUNCTION(ltrim, const String& str, 
                      const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
   return stringTrim<true,false>(str, charlist);
 }
 
-String HHVM_FUNCTION(rtrim, String str,
+String HHVM_FUNCTION(rtrim, const String& str,
                      const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
   return stringTrim<false,true>(str, charlist);
 }
 
-String HHVM_FUNCTION(chop, String str, 
+String HHVM_FUNCTION(chop, const String& str, 
                      const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
   return stringTrim<false,true>(str, charlist);
 }
 
 Variant HHVM_FUNCTION(explode, const String& delimiter, 
-                      const String& str, int limit /* = 0x7FFFFFFF */) {
+                      const String& str, int64_t limit /* = 0x7FFFFFFF */) {
   return StringUtil::Explode(str, delimiter, limit);
 }
 
@@ -503,13 +509,17 @@ String HHVM_FUNCTION(implode, const Variant& arg1,
   return StringUtil::Implode(items, delim);
 }
 
+String HHVM_FUNCTION(join, const Variant& glue,
+                     const Variant& pieces /* = null_variant */) {
+  return HHVM_FN(implode)(glue, pieces);
+}
 
 Variant HHVM_FUNCTION(str_split, const String& str, 
                       int64_t split_length /* = 1 */) {
   return StringUtil::Split(str, split_length);
 }
 
-Variant HHVM_FUNCTION(chunk_split, const String& body, int chunklen /* = 76 */,
+Variant HHVM_FUNCTION(chunk_split, const String& body, int64_t chunklen /* = 76 */,
                       const String& end /* = "\r\n" */) {
   return StringUtil::ChunkSplit(body, chunklen, end);
 }
@@ -767,21 +777,21 @@ Variant HHVM_FUNCTION(substr_replace, const Variant& str,
   return ret;
 }
 
-Variant HHVM_FUNCTION(substr, const String& str, int start, 
-                        int length /* = 0x7FFFFFFF */) {
+Variant HHVM_FUNCTION(substr, const String& str, int64_t start, 
+                        int64_t length /* = 0x7FFFFFFF */) {
   String ret = str.substr(start, length, true);
   if (ret.isNull()) return false;
   return ret;
 }
 
-String HHVM_FUNCTION(str_pad, const String& input, int pad_length, 
+String HHVM_FUNCTION(str_pad, const String& input, int64_t pad_length, 
                      const String& pad_string /* = " " */,
-                        int pad_type /* = k_STR_PAD_RIGHT */) {
+                        int64_t pad_type /* = k_STR_PAD_RIGHT */) {
   return StringUtil::Pad(input, pad_length, pad_string,
                          (StringUtil::PadType)pad_type);
 }
 
-String f_str_repeat(const String& input, int multiplier) {
+String HHVM_FUNCTION(str_repeat, const String& input, int64_t multiplier) {
   if (input.empty()) {
     return input;
   }
@@ -941,19 +951,6 @@ Variant f_substr_compare(const String& main_str, const String& str, int offset,
 Variant f_strstr(const String& haystack, const Variant& needle,
                  bool before_needle /* = false */) {
   Variant ret = f_strpos(haystack, needle);
-  if (same(ret, false)) {
-    return false;
-  }
-  if (before_needle) {
-    return haystack.substr(0, ret.toInt32());
-  } else {
-    return haystack.substr(ret.toInt32());
-  }
-}
-
-Variant f_stristr(const String& haystack, const Variant& needle,
-                  bool before_needle /* = false */) {
-  Variant ret = f_stripos(haystack, needle);
   if (same(ret, false)) {
     return false;
   }
