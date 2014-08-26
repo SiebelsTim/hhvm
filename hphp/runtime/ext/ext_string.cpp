@@ -120,7 +120,7 @@ String stringForEachFast(const String& str, Op action) {
   return stringForEach<false>(str.size(), str.get(), action);
 }
 
-String f_addcslashes(const String& str, const String& charlist) {
+String HHVM_FUNCTION(addcslashes, const String& str, const String& charlist) {
   if (str.empty() || (!charlist.isNull() && charlist.empty())) {
     return str;
   }
@@ -158,7 +158,7 @@ String f_addcslashes(const String& str, const String& charlist) {
     });
 }
 
-String f_stripcslashes(const String& str) {
+String HHVM_FUNCTION(stripcslashes, const String& str) {
   if (str.empty()) {
     return str;
   }
@@ -219,7 +219,7 @@ String f_stripcslashes(const String& str) {
     });
 }
 
-String f_addslashes(const String& str) {
+String HHVM_FUNCTION(addslashes, const String& str) {
   if (str.empty()) {
     return str;
   }
@@ -240,7 +240,7 @@ String f_addslashes(const String& str) {
     });
 }
 
-String f_stripslashes(const String& str) {
+String HHVM_FUNCTION(stripslashes, const String& str) {
   if (str.empty()) {
     return str;
   }
@@ -257,7 +257,7 @@ String f_stripslashes(const String& str) {
     });
 }
 
-String f_bin2hex(const String& str) {
+String HHVM_FUNCTION(bin2hex, const String& str) {
   if (str.empty()) {
     return str;
   }
@@ -270,7 +270,7 @@ String f_bin2hex(const String& str) {
     });
 }
 
-Variant f_hex2bin(const String& str) {
+Variant HHVM_FUNCTION(hex2bin, const String& str) {
   if (str.empty()) {
     return str;
   }
@@ -316,15 +316,8 @@ const StaticString
   s_br("<br />\n"),
   s_non_xhtml_br("<br>\n");
 
-String f_nl2br(const String& str, bool is_xhtml /* = true */) {
-  if (is_xhtml) {
-    return string_replace(str, s_nl, s_br);
-  } else {
-    return string_replace(str, s_nl, s_non_xhtml_br);
-  }
-}
 
-String f_quotemeta(const String& str) {
+String HHVM_FUNCTION(quotemeta, const String& str) {
   if (str.empty()) {
     return str;
   }
@@ -342,7 +335,7 @@ String f_quotemeta(const String& str) {
     });
 }
 
-String f_str_shuffle(const String& str) {
+String HHVM_FUNCTION(str_shuffle, const String& str) {
   if (str.size() <= 1) {
     return str;
   }
@@ -362,7 +355,7 @@ String f_str_shuffle(const String& str) {
   return ret;
 }
 
-String f_strrev(const String& str) {
+String HHVM_FUNCTION(strrev, const String& str) {
   auto len = str.size();
 
   if (str.get()->hasExactlyOneRef()) {
@@ -388,11 +381,11 @@ String f_strrev(const String& str) {
   return ret;
 }
 
-String f_strtolower(String str) {
+String HHVM_FUNCTION(strtolower, String str) {
   return stringForEachFast(str, tolower);
 }
 
-String f_strtoupper(String str) {
+String HHVM_FUNCTION(strtoupper, String str) {
   return stringForEachFast(str, toupper);
 }
 
@@ -415,15 +408,15 @@ String stringToCaseFirst(const String& str, OpTo tocase, OpIs iscase) {
   return ret;
 }
 
-String f_ucfirst(String str) {
+String HHVM_FUNCTION(ucfirst, String str) {
   return stringToCaseFirst(str, toupper, isupper);
 }
 
-String f_lcfirst(String str) {
+String HHVM_FUNCTION(lcfirst, String str) {
   return stringToCaseFirst(str, tolower, islower);
 }
 
-String f_ucwords(String str) {
+String HHVM_FUNCTION(ucwords, String str) {
   char last = ' ';
   return stringForEachFast(str, [&] (char c) {
     char ret = isspace(last) ? toupper(c) : c;
@@ -432,7 +425,8 @@ String f_ucwords(String str) {
   });
 }
 
-String f_strip_tags(const String& str, const String& allowable_tags /* = "" */) {
+String HHVM_FUNCTION(strip_tags, const String& str, 
+                     const String& allowable_tags /* = "" */) {
   return StringUtil::StripHTMLTags(str, allowable_tags);
 }
 
@@ -459,33 +453,40 @@ String stringTrim(String& str, const String& charlist) {
       char* sdata = str.bufferSlice().ptr;
       for (int idx = 0; start < len;) sdata[idx++] = sdata[start++];
     }
-    return String(str.get()->shrink(slen));
+    str.shrink(slen);
+    return str;
   }
 
   return str.substr(start, end - start + 1);
 }
 
-String f_trim(String str, const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
+String HHVM_FUNCTION(trim, String str, 
+                     const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
   return stringTrim<true,true>(str, charlist);
 }
 
-String f_ltrim(String str, const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
+String HHVM_FUNCTION(ltrim, String str, 
+                     const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
   return stringTrim<true,false>(str, charlist);
 }
 
-String f_rtrim(String str, const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
+String HHVM_FUNCTION(rtrim, String str,
+                     const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
   return stringTrim<false,true>(str, charlist);
 }
 
-String f_chop(String str, const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
+String HHVM_FUNCTION(chop, String str, 
+                     const String& charlist /* = k_HPHP_TRIM_CHARLIST */) {
   return stringTrim<false,true>(str, charlist);
 }
 
-Variant f_explode(const String& delimiter, const String& str, int limit /* = 0x7FFFFFFF */) {
+Variant HHVM_FUNCTION(explode, const String& delimiter, 
+                      const String& str, int limit /* = 0x7FFFFFFF */) {
   return StringUtil::Explode(str, delimiter, limit);
 }
 
-String f_implode(const Variant& arg1, const Variant& arg2 /* = null_variant */) {
+String HHVM_FUNCTION(implode, const Variant& arg1, 
+                     const Variant& arg2 /* = null_variant */) {
   Array items;
   String delim;
   if (isContainer(arg1)) {
@@ -502,15 +503,13 @@ String f_implode(const Variant& arg1, const Variant& arg2 /* = null_variant */) 
   return StringUtil::Implode(items, delim);
 }
 
-String f_join(const Variant& glue, const Variant& pieces /* = null_variant */) {
-  return f_implode(glue, pieces);
-}
 
-Variant f_str_split(const String& str, int64_t split_length /* = 1 */) {
+Variant HHVM_FUNCTION(str_split, const String& str, 
+                      int64_t split_length /* = 1 */) {
   return StringUtil::Split(str, split_length);
 }
 
-Variant f_chunk_split(const String& body, int chunklen /* = 76 */,
+Variant HHVM_FUNCTION(chunk_split, const String& body, int chunklen /* = 76 */,
                       const String& end /* = "\r\n" */) {
   return StringUtil::ChunkSplit(body, chunklen, end);
 }
@@ -531,7 +530,8 @@ struct TokenizerData final : RequestEventHandler {
 };
 IMPLEMENT_STATIC_REQUEST_LOCAL(TokenizerData, s_tokenizer_data);
 
-Variant f_strtok(const String& str, const Variant& token /* = null_variant */) {
+Variant HHVM_FUNCTION(strtok, const String& str, 
+                      const Variant& token /* = null_variant */) {
   String stoken;
   if (!token.isNull()) {
     s_tokenizer_data->str = str;
@@ -650,7 +650,8 @@ static Variant str_replace(const Variant& search, const Variant& replace, const 
                      caseSensitive);
 }
 
-Variant f_str_replace(const Variant& search, const Variant& replace, const Variant& subject,
+Variant HHVM_FUNCTION(str_replace, const Variant& search, 
+                      const Variant& replace, const Variant& subject,
                       VRefParam count /* = null */) {
   int nCount = 0;
   Variant ret = str_replace(search, replace, subject, nCount, true);
@@ -658,15 +659,17 @@ Variant f_str_replace(const Variant& search, const Variant& replace, const Varia
   return ret;
 }
 
-Variant f_str_ireplace(const Variant& search, const Variant& replace, const Variant& subject,
-                       VRefParam count /* = null */) {
+Variant HHVM_FUNCTION(str_ireplace, const Variant& search, 
+                      const Variant& replace, const Variant& subject,
+                      VRefParam count /* = null */) {
   int nCount = 0;
   Variant ret = str_replace(search, replace, subject, nCount, false);
   count = nCount;
   return ret;
 }
 
-Variant f_substr_replace(const Variant& str, const Variant& replacement,
+Variant HHVM_FUNCTION(substr_replace, const Variant& str, 
+                         const Variant& replacement,
                          const Variant& start,
                          const Variant& length /* = 0x7FFFFFFF */) {
   if (!str.is(KindOfArray)) {
@@ -764,13 +767,15 @@ Variant f_substr_replace(const Variant& str, const Variant& replacement,
   return ret;
 }
 
-Variant f_substr(const String& str, int start, int length /* = 0x7FFFFFFF */) {
+Variant HHVM_FUNCTION(substr, const String& str, int start, 
+                        int length /* = 0x7FFFFFFF */) {
   String ret = str.substr(start, length, true);
   if (ret.isNull()) return false;
   return ret;
 }
 
-String f_str_pad(const String& input, int pad_length, const String& pad_string /* = " " */,
+String HHVM_FUNCTION(str_pad, const String& input, int pad_length, 
+                     const String& pad_string /* = " " */,
                         int pad_type /* = k_STR_PAD_RIGHT */) {
   return StringUtil::Pad(input, pad_length, pad_string,
                          (StringUtil::PadType)pad_type);
