@@ -45,6 +45,7 @@ mysql_query('DROP USER pcontest', $links[0]);
 mysql_close($links[0]);
 print "done!\n";
 ?>
+<?php error_reporting(0); ?>
 <?php
 // connect + select_db
 require_once("connect.inc");

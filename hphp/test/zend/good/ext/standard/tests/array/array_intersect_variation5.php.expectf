@@ -60,15 +60,15 @@ array(2) {
 }
 -- Iterator 8 --
 array(2) {
-  ["re%r\x09%rd"]=>
+  ["re	d"]=>
   string(5) "color"
-  ["%r\x0b\x0c%rworld"]=>
+  ["world"]=>
   float(2.2)
 }
 array(2) {
-  ["re%r\x09%rd"]=>
+  ["re	d"]=>
   string(5) "color"
-  ["%r\x0b\x0c%rworld"]=>
+  ["world"]=>
   float(2.2)
 }
 -- Iterator 9 --

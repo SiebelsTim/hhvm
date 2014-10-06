@@ -27,6 +27,7 @@
 	}
 	mysql_close($link);
 ?>
+<?php error_reporting(0); ?>
 <?php
 require_once('connect.inc');
 
@@ -42,4 +43,4 @@ if (!mysql_query($link, 'DROP TABLE IF EXISTS test', $link)) {
 mysql_close($link);
 
 unlink('bug53649.data');
-?>
+?>

@@ -31,7 +31,7 @@ array(1) {
 -- Iteration 6 --
 array(4) {
   [0]=>
-  %unicode|string%(3) "a%r\x0b\x0c%r"
+  %unicode|string%(3) "a"
   [1]=>
   %unicode|string%(5) "aaaa
 "
@@ -63,10 +63,10 @@ the lazy dog
 This is a double quoted string"
   [%b|u%"h3"]=>
   %unicode|string%(88) "hello
- world%r\x09%r
-1111%r\x09\x09%r != 2222%r\x0b\x0b%r
+ world	
+1111		 != 2222
 heredoc
-double quoted string. with%r\x0b%rdifferent%r\x0c%rwhite%r\x0b%rspaces"
+double quoted string. withdifferentwhitespaces"
 }
 -- Iteration 9 --
 array(2) {

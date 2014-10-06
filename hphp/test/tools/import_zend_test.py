@@ -1555,7 +1555,7 @@ zend_release_name = "php-" + zend_version
 zend_release_filename = zend_release_name + ".tar.gz"
 zend_release_archive = os.path.join(zend_dir, zend_release_filename)
 zend_release_path = os.path.join(zend_dir, zend_release_name)
-
+print zend_release_filename
 if not os.path.isfile(zend_release_archive):
     print('Downloading ' + zend_release_name + '...')
     zend_release_url = "http://php.net/get/" + zend_release_filename + "/from/this/mirror"

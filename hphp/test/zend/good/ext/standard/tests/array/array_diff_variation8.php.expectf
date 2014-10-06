@@ -66,13 +66,13 @@ array(3) {
 }
 array(4) {
   [111]=>
-  string(6) "%r\x09%rHello"
+  string(6) "	Hello"
   ["red"]=>
-  string(6) "col%r\x09%ror"
+  string(6) "col	or"
   [2]=>
-  string(7) "%r\x0b\x0c%rworld"
+  string(7) "world"
   [3]=>
-  string(6) "%r\x09%rHello"
+  string(6) "	Hello"
 }
 -- Iteration 6 --
 array(3) {

@@ -60,11 +60,11 @@ array(4) {
 }
 -- Iteration 8 --
 array(4) {
-  ["%r\x09%rHello"]=>
+  ["	Hello"]=>
   int(111)
-  ["re%r\x09%rd"]=>
+  ["re	d"]=>
   string(5) "color"
-  ["%r\x0b\x0c%rworld"]=>
+  ["world"]=>
   float(2.2)
   ["pen
 "]=>

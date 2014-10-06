@@ -9,13 +9,13 @@ Multiline String Using
 Heredoc"
 -- Iteration 4 --
 string(93) "Testing
-Ucword(str)%r\x09%rWith
-Multiline   String%r\x09\x09%rUsing
+Ucword(str)	With
+Multiline   String		Using
 Heredoc
-String.with%r\x0b%rDifferent%r\x0c%rWhite%r\x0b%rSpaces"
+String.withDifferentWhiteSpaces"
 -- Iteration 5 --
 string(53) "12sting 123string 4567
-String%r\x09%r123string
+String	123string
 12 Test
 5test"
 -- Iteration 6 --
