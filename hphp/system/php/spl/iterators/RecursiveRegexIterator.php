@@ -28,11 +28,11 @@ class RecursiveRegexIterator extends RegexIterator
    *                     list of available flags.
    * @preg_flags mixed   The regular expression flags. These flags depend on
    *                     the operation mode parameter:
-   *                - RecursiveRegexIterator::ALL_MATCHES: See preg_match_all().
-   *                - RecursiveRegexIterator::GET_MATCH: See preg_match().
-   *                - RecursiveRegexIterator::MATCH: See preg_match().
-   *                - RecursiveRegexIterator::REPLACE: none.
-   *                - RecursiveRegexIterator::SPLIT: See preg_split().
+   *                - RegexIterator::ALL_MATCHES: See preg_match_all().
+   *                - RegexIterator::GET_MATCH: See preg_match().
+   *                - RegexIterator::MATCH: See preg_match().
+   *                - RegexIterator::REPLACE: none.
+   *                - RegexIterator::SPLIT: See preg_split().
    */
   public function __construct(RecursiveIterator $iterator, $regex,
                               $mode = self::MATCH, $flags = 0,
